@@ -1,0 +1,8 @@
+SELECT _FILE,
+       _LINE,
+       _MODIFIED AS _MODIFIED_TS,
+       _FIVETRAN_SYNCED AS _FIVETRAN_SYNCED_TS,
+       RETURNED_AT AS RETURN_DATE,
+       ORDER_ID,
+       CAST(IS_REFUNDED AS BOOLEAN) AS IS_REFUNDED
+FROM {{source("google_drive","returns")}}
