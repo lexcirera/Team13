@@ -1,0 +1,143 @@
+version: 2
+
+models:
+  - name: dim_client
+    description: The client dimension table. This includes all clients that ever placed an order
+    columns:
+      - name: client_name
+        description: The encrypted name of a client
+      - name: phone
+        description: The encrypted phone number of a client
+      - name: payment_method
+        description: The payment method of a client
+      - name: payment_info
+        description: The encrypted payment information of a client
+      - name: state
+        description: The state the client lives in
+      - name: shipping_address
+        description: The address where the order was shipped to
+
+  - name: dim_employee
+    description: The employee dimension table. One row for each employee.
+    columns:
+      - name: employee_id
+        tests:
+          - unique
+          - not_null
+        description: The unique identifier of an employee
+      - name: hire_date
+        description: The date the employee was hired
+      - name: name
+        description: Encrypted name of employee
+      - name: city
+        description: City of employee
+      - name: address
+        description: The encrypted address of the employee
+      - name: title
+        description: the job title of the employee
+      - name: annual_salary
+        description: annual salary of the employee
+      - name: quit_date
+        description: the date the employee quit the company (if they did)
+
+  - name: dim_item
+    description: The item dimension table. This includes all items sold by the company 
+    columns:
+      - name: item_name
+        description: The name of the item
+      - name: total_add_cart
+        description: Total number of this item which was added to cart
+      - name: total_remove_cart
+        description: Total number of this item which was removed from cart
+      - name: net_sells
+        description: The number of this item which was sold
+      - name: item_prices
+        description: The prices of this item. This is an array as there can be multiple prices
+      - name: average_selling_price
+        description: The average selling price of the item
+      - name: total_item_revenue
+        description: total revenue generated from the item
+
+  - name: fact_session
+    description: The fact_session table. One row for each session.
+    columns:
+      - name: session_id
+        tests:
+          - unique
+          - not_null
+        description: The unique identifier of a session
+      - name: session_ts 
+        description: timestamp for when a session started
+      - name: os
+        description: operating system used for each session
+	    - name: client_id
+        tests:
+          - not_null
+        description: The unique identifier of a client
+      - name: ip
+        description: IP address of a session
+      - name: number_pages_viewed
+        description: number pages viewed in a session
+      - name: number_items_viewed
+        description: number items viewed in a session
+      - name: number_orders
+        description: number orders made in a session
+
+  - name: fact_order
+    description: Fact order for all orders. One row for each order.
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+        description: unique identifier for each other
+      - name: order_date
+        description: date of each other
+      - name: session_id
+        description: session from which the order was made
+      - name: client_id
+        description: client who made the order
+      - name: client_name
+        description: name of client who made the order
+      - name: phone
+        description: phone number of client who made the order
+      - name: state
+        description: shipping state for order
+      - name: shipping_address
+        description: shipping address for order
+      - name: payment_method
+        description: payment method used
+      - name: payment_info
+        description: payment information of the order
+      - name: order_value
+        description: dollar value in the order
+      - name: tax_rate
+        description: tax rate at the time of order
+      - name: shipping_cost
+        description: shipping cost of order
+      - name: is_returned
+        description: boolean if order was returned
+      - name: return_date
+        description: return date of order
+      - name: is_refunded
+        description: was order refunded
+
+  - name: daily_finances
+    description: daily finances of the company
+    columns:
+      - name: date
+        description: date of the finances
+      - name: orders_revenue
+        description: total revenue generated from orders
+      - name: taxes_cost
+        description: taxes incurred from orders
+      - name: shipping_cost
+        description: total shipping costs
+      - name: refund_cost
+        description: total amount refunded to customers
+      - name: salaries_cost
+        description: total salaries paid to employees
+      - name: expenses_cost
+        description: expenses incurred by company (apart from salaries)
+      - name: profit
+        description: daily profit
