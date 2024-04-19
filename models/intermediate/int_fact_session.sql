@@ -33,3 +33,4 @@ from {{ ref("base_snowflake_sessions") }} as sessions
 left join item_view_metrics as item_views on item_views.session_id = sessions.session_id
 left join page_view_metrics as page_views on page_views.session_id = sessions.session_id
 left join order_metrics on order_metrics.session_id = sessions.session_id
+group by 1
