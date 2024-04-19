@@ -22,14 +22,15 @@ with
 
 select
     sessions.session_id,
-    sessions.session_ts,
-    sessions.os,
-    sessions.client_id,
-    sessions.ip,
-    coalesce(page_views.number_pages_viewed, 0) as number_pages_viewed,
-    coalesce(item_views.number_items_viewed, 0) as number_items_viewed,
-    coalesce(order_metrics.number_orders, 0) as number_orders
+    min(sessions.session_ts),
+    min(sessions.os),
+    min(sessions.client_id),
+    min(sessions.ip),
+    min(coalesce(page_views.number_pages_viewed, 0)) as number_pages_viewed,
+    min(coalesce(item_views.number_items_viewed, 0)) as number_items_viewed,
+    min(coalesce(order_metrics.number_orders, 0)) as number_orders
 from {{ ref("base_snowflake_sessions") }} as sessions
 left join item_view_metrics as item_views on item_views.session_id = sessions.session_id
 left join page_view_metrics as page_views on page_views.session_id = sessions.session_id
 left join order_metrics on order_metrics.session_id = sessions.session_id
+group by 1
