@@ -5,8 +5,9 @@ FROM {{ref("base_snowflake_orders")}}
 
 SELECT CLIENT_NAME, 
        PHONE,
-       SHIPPING_ADDRESS,
+       PAYMENT_METHOD,
        PAYMENT_INFO,
-       STATE
+       STATE,
+       SHIPPING_ADDRESS
 FROM ranking 
 WHERE row_n = 1
