@@ -70,8 +70,9 @@ models:
         description: timestamp for when a session started
       - name: os
         description: operating system used for each session
-	    - name: client_id
+      - name: client_id
         tests:
+          - unique
           - not_null
         description: The unique identifier of a client
       - name: ip
