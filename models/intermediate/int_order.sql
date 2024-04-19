@@ -27,7 +27,7 @@ Select
         END AS return_date,
 
     CASE 
-        WHEN min(gdr.order_id) IS NOT NULL THEN min(gdr.IS_REFUNDED) 
+        WHEN min(gdr.order_id) IS NOT NULL THEN max(gdr.IS_REFUNDED) 
         ELSE NULL
         END AS is_refunded,
     
